@@ -25,35 +25,27 @@ def navigate_to(page_name):
     st.rerun()
 
 # ==========================================
-# 2. CUSTOM CSS (PREMIUM GLASSMORPHISM)
+# 2. CUSTOM CSS (GIANT EMOJI BUTTONS)
 # ==========================================
 st.markdown("""
+    <style>
+    /* Fixed the font import bug by moving it inside the style tag! */
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
 
-    <style>
     /* Global Variables */
     :root {
-        --bg-gradient: radial-gradient(circle at top left, #1e293b, #0f172a 50%, #020617 100%);
-        --card-bg: rgba(30, 41, 59, 0.4);
-        --card-border: rgba(255, 255, 255, 0.08);
-        --card-border-glow: rgba(45, 212, 191, 0.5);
-        --text-mint: #2dd4bf; /* Vibrant Teal/Mint */
+        --app-bg: #1b263b;         
+        --text-mint: #2dd4bf; 
         --text-white: #f8fafc;
         --text-muted: #94a3b8;
     }
 
-    /* Base App Styling & Animation */
-    @keyframes fadeInScale {
-        0% { opacity: 0; transform: scale(0.98); }
-        100% { opacity: 1; transform: scale(1); }
-    }
-
+    /* Base App Styling */
     .stApp {
-        background: var(--bg-gradient) !important;
+        background: radial-gradient(circle at top left, #1e293b, #0f172a 50%, #020617 100%) !important;
         background-attachment: fixed !important;
         color: var(--text-white);
         font-family: 'Outfit', sans-serif !important;
-        animation: fadeInScale 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
     }
 
     /* Headings */
@@ -70,7 +62,7 @@ st.markdown("""
     }
 
     /* =========================================
-       STYLE 1: GLASSMORPHIC SQUARES (Primary) 
+       STYLE 1: GIANT EMOJI BUTTONS (Primary) 
        ========================================= */
     div.stButton {
         display: flex !important;
@@ -79,12 +71,9 @@ st.markdown("""
     }
 
     div.stButton > button[kind="primary"] {
-        background: var(--card-bg) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        border: 1px solid var(--card-border) !important;
-        border-top: 1px solid rgba(255,255,255,0.15) !important;
-        border-radius: 24px !important;
+        /* Remove the box background entirely */
+        background: transparent !important;
+        border: none !important;
         
         /* STRICT ABSOLUTE SIZING */
         width: 350px !important;
@@ -94,55 +83,74 @@ st.markdown("""
         min-height: 350px !important;
         max-height: 350px !important;
         
-        padding: 40px 30px !important;
+        padding: 20px !important;
         margin-bottom: 20px !important;
         box-sizing: border-box !important;
         
-        /* TEXT ALIGNMENT */
+        /* TEXT ALIGNMENT - Centered over the emoji */
+        position: relative !important;
         display: flex !important;
         flex-direction: column !important;
-        justify-content: flex-start !important; 
-        align-items: flex-start !important;
-        text-align: left !important;
+        justify-content: center !important; 
+        align-items: center !important;
+        text-align: center !important;
         overflow: hidden !important; 
         
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5) !important;
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        box-shadow: none !important; /* No more box shadow */
     }
 
-    /* 1. Emoji Styling (First text node) */
+    /* 1. Giant Background Emoji Styling */
     div.stButton > button[kind="primary"] p:first-of-type {
-        font-size: 42px !important;
-        margin-bottom: 20px !important;
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        font-size: 250px !important; /* Massive Emoji */
         line-height: 1 !important;
+        margin: 0 !important;
+        opacity: 0.15 !important; /* Semi-transparent */
+        z-index: 0 !important; /* Send to back */
+        transition: all 0.3s ease !important;
     }
 
     /* 2. Bold Title Styling */
     div.stButton > button[kind="primary"] strong {
-        font-size: 26px !important; 
+        position: relative !important;
+        z-index: 1 !important; /* Bring to front */
+        font-size: 28px !important; 
         font-weight: 800 !important;
         display: block !important;  
-        margin-bottom: 12px !important; 
+        margin-bottom: 15px !important; 
         color: var(--text-white) !important;
         line-height: 1.2 !important;
         letter-spacing: 0.5px !important;
+        text-shadow: 0px 4px 15px rgba(0,0,0,0.9) !important; /* Makes text pop over the emoji */
     }
 
     /* 3. Description Text Styling */
     div.stButton > button[kind="primary"] p:last-of-type {
-        font-size: 17px !important;
-        font-weight: 300 !important;
+        position: relative !important;
+        z-index: 1 !important; /* Bring to front */
+        font-size: 18px !important;
+        font-weight: 400 !important;
         line-height: 1.5 !important;
-        color: var(--text-muted) !important;
+        color: var(--text-mint) !important;
         margin: 0 !important;
+        text-shadow: 0px 2px 10px rgba(0,0,0,0.9) !important; /* Makes text pop over the emoji */
     }
 
     /* Premium Hover Effects */
     div.stButton > button[kind="primary"]:hover {
-        background: rgba(45, 212, 191, 0.05) !important; 
-        border-color: var(--card-border-glow) !important;
-        transform: translateY(-8px) scale(1.02) !important;
-        box-shadow: 0 20px 40px -10px rgba(45, 212, 191, 0.15), 0 0 20px rgba(45, 212, 191, 0.05) inset !important;
+        transform: translateY(-8px) scale(1.05) !important;
+        background: transparent !important; 
+    }
+    
+    /* Make the emoji glow and grow on hover */
+    div.stButton > button[kind="primary"]:hover p:first-of-type {
+        opacity: 0.35 !important;
+        transform: translate(-50%, -50%) scale(1.1) !important;
+        filter: drop-shadow(0px 0px 20px rgba(45, 212, 191, 0.4)) !important;
     }
     
     div.stButton > button[kind="primary"]:hover strong {
@@ -156,13 +164,12 @@ st.markdown("""
         background: rgba(255,255,255,0.05) !important;
         backdrop-filter: blur(10px) !important;
         border: 1px solid rgba(255,255,255,0.1) !important;
-        border-radius: 50px !important; /* Circle/Pill shape */
+        border-radius: 50px !important; 
         color: transparent !important;  
         text-shadow: 0 0 0 var(--text-mint) !important; 
         font-size: 30px !important;
         padding: 10px 25px !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
     }
     
     div.stButton > button[kind="secondary"]:hover {
@@ -185,11 +192,9 @@ st.markdown("""
         padding: 15px !important;
         margin-top: 20px !important;
         transition: all 0.2s ease !important;
-        box-shadow: 0 4px 15px rgba(45, 212, 191, 0.3) !important;
     }
     div.stButton > button[kind="tertiary"] p { color: #ffffff !important; }
     div.stButton > button[kind="tertiary"]:hover { 
-        box-shadow: 0 8px 25px rgba(45, 212, 191, 0.5) !important;
         transform: translateY(-2px) !important;
         filter: brightness(1.1);
     }
@@ -207,20 +212,11 @@ st.markdown("""
         border-radius: 12px !important;
         padding: 12px !important;
         transition: all 0.3s ease !important;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
     }
     
     .stTextInput > div > div > input:focus, 
     .stTextArea > div > div > textarea:focus {
         border-color: var(--text-mint) !important;
-        box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2), inset 0 2px 4px rgba(0,0,0,0.2) !important;
-    }
-
-    /* Info & Warning Banners */
-    .stAlert {
-        border-radius: 16px !important;
-        backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(255,255,255,0.1) !important;
     }
 
     /* Fixed Header */
@@ -337,7 +333,7 @@ def submit_page():
     _, center, _ = st.columns([1, 2, 1])
     
     with center:
-        with st.container(border=True): # Wraps the form in a nice glass box
+        with st.container(border=True): 
             if st.session_state.wizard_step == 1:
                 st.subheader("1. Was ist das Problem oder die Idee?" if lang == "DE" else "1. What is the problem or idea?")
                 
