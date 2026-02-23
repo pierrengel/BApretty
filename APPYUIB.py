@@ -29,7 +29,6 @@ def navigate_to(page_name):
 # ==========================================
 st.markdown("""
     <style>
-    /* Fixed the font import bug by moving it inside the style tag! */
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
 
     /* Global Variables */
@@ -71,7 +70,6 @@ st.markdown("""
     }
 
     div.stButton > button[kind="primary"] {
-        /* Remove the box background entirely */
         background: transparent !important;
         border: none !important;
         
@@ -97,7 +95,7 @@ st.markdown("""
         overflow: hidden !important; 
         
         transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-        box-shadow: none !important; /* No more box shadow */
+        box-shadow: none !important; 
     }
 
     /* 1. Giant Background Emoji Styling */
@@ -106,18 +104,18 @@ st.markdown("""
         top: 50% !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
-        font-size: 250px !important; /* Massive Emoji */
+        font-size: 250px !important; 
         line-height: 1 !important;
         margin: 0 !important;
-        opacity: 0.15 !important; /* Semi-transparent */
-        z-index: 0 !important; /* Send to back */
+        opacity: 0.15 !important; 
+        z-index: 0 !important; 
         transition: all 0.3s ease !important;
     }
 
     /* 2. Bold Title Styling */
     div.stButton > button[kind="primary"] strong {
         position: relative !important;
-        z-index: 1 !important; /* Bring to front */
+        z-index: 1 !important; 
         font-size: 28px !important; 
         font-weight: 800 !important;
         display: block !important;  
@@ -125,19 +123,19 @@ st.markdown("""
         color: var(--text-white) !important;
         line-height: 1.2 !important;
         letter-spacing: 0.5px !important;
-        text-shadow: 0px 4px 15px rgba(0,0,0,0.9) !important; /* Makes text pop over the emoji */
+        text-shadow: 0px 4px 15px rgba(0,0,0,0.9) !important; 
     }
 
     /* 3. Description Text Styling */
     div.stButton > button[kind="primary"] p:last-of-type {
         position: relative !important;
-        z-index: 1 !important; /* Bring to front */
+        z-index: 1 !important; 
         font-size: 18px !important;
         font-weight: 400 !important;
         line-height: 1.5 !important;
         color: var(--text-mint) !important;
         margin: 0 !important;
-        text-shadow: 0px 2px 10px rgba(0,0,0,0.9) !important; /* Makes text pop over the emoji */
+        text-shadow: 0px 2px 10px rgba(0,0,0,0.9) !important; 
     }
 
     /* Premium Hover Effects */
@@ -210,8 +208,13 @@ st.markdown("""
         border: 1px solid rgba(255,255,255,0.1) !important;
         color: #fff !important;
         border-radius: 12px !important;
-        padding: 12px !important;
         transition: all 0.3s ease !important;
+    }
+
+    /* Add padding only to text areas so we don't break the language dropdown */
+    .stTextInput > div > div > input, 
+    .stTextArea > div > div > textarea {
+        padding: 12px !important;
     }
     
     .stTextInput > div > div > input:focus, 
@@ -236,7 +239,8 @@ with st.sidebar:
     lbl_lite = "Lite Mode (Slow Internet)" if lang == "EN" else "Lite-Modus (Langsames Internet)"
     st.session_state.lite_mode = st.toggle(lbl_lite, value=st.session_state.lite_mode)
 
-col_empty, col_lang = st.columns([9, 1])
+# Slightly widened the language column so text doesn't overlap the arrow
+col_empty, col_lang = st.columns([8, 1])
 with col_lang:
     selected_lang = st.selectbox("Language", ["DE", "EN"], index=0 if lang == "DE" else 1, label_visibility="collapsed")
     if selected_lang != st.session_state.lang:
