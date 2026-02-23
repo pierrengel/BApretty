@@ -25,7 +25,7 @@ def navigate_to(page_name):
     st.rerun()
 
 # ==========================================
-# 2. CUSTOM CSS (GIANT EMOJI BUTTONS)
+# 2. CUSTOM CSS (PERFECT CENTERING & EMOJIS)
 # ==========================================
 st.markdown("""
     <style>
@@ -47,17 +47,36 @@ st.markdown("""
         font-family: 'Outfit', sans-serif !important;
     }
 
-    /* Headings */
-    h1, h2, h3, h4, p, label, .stMarkdown {
+    /* Override Markdown fonts */
+    p, label, .stMarkdown {
         font-family: 'Outfit', sans-serif !important;
     }
-    
-    h1 {
+
+    /* Custom Titles (Bypasses Streamlit's anchor link bug for perfect centering) 
+    */
+    .hero-title {
+        text-align: center !important;
+        font-size: 6.5rem !important;
         font-weight: 800 !important;
         letter-spacing: -1px !important;
-        background: linear-gradient(135deg, #fff 0%, #2dd4bf 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background: linear-gradient(135deg, #fff 0%, #2dd4bf 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        margin-top: 20px !important;
+        margin-bottom: 50px !important;
+        font-family: 'Outfit', sans-serif !important;
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .page-title {
+        text-align: center !important;
+        font-size: 3rem !important;
+        font-weight: 800 !important;
+        color: var(--text-white) !important;
+        font-family: 'Outfit', sans-serif !important;
+        margin-bottom: 20px !important;
+        letter-spacing: -0.5px !important;
     }
 
     /* =========================================
@@ -235,11 +254,10 @@ st.markdown("""
 lang = st.session_state.lang
 
 with st.sidebar:
-    st.markdown("<h2 style='text-align: center;'>⚙️ Settings</h2>" if lang == "EN" else "<h2 style='text-align: center;'>⚙️ Einstellungen</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; font-family: Outfit;'>⚙️ Settings</h2>" if lang == "EN" else "<h2 style='text-align: center; font-family: Outfit;'>⚙️ Einstellungen</h2>", unsafe_allow_html=True)
     lbl_lite = "Lite Mode (Slow Internet)" if lang == "EN" else "Lite-Modus (Langsames Internet)"
     st.session_state.lite_mode = st.toggle(lbl_lite, value=st.session_state.lite_mode)
 
-# Slightly widened the language column so text doesn't overlap the arrow
 col_empty, col_lang = st.columns([8, 1])
 with col_lang:
     selected_lang = st.selectbox("Language", ["DE", "EN"], index=0 if lang == "DE" else 1, label_visibility="collapsed")
@@ -273,10 +291,11 @@ def support_dialog(project_id, project_title):
 # ==========================================
 
 def home_page():
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<h1 style='text-align: center; font-size: 5.5rem; margin-bottom: 50px;'>ROBIN</h1>", unsafe_allow_html=True)
+    # Use custom div class to perfectly center title without Streamlit's anchor link 🔗
+    st.markdown("<div class='hero-title'>ROBIN</div>", unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
+    # Use 0.5 ratio spacer columns to gently squeeze the 3 boxes into the dead center of wide screens
+    _, col1, col2, col3, _ = st.columns([0.5, 2.5, 2.5, 2.5, 0.5])
     
     with col1:
         lbl_feed = "💬\n\n**COMMUNITY FEED**\n\nSehen Sie, was Ihre Nachbarn vorschlagen." if lang == "DE" else "💬\n\n**COMMUNITY FEED**\n\nSee what neighbors are suggesting."
@@ -305,9 +324,10 @@ def submit_choice_page():
     st.markdown("---")
     
     title = "Welche Art von Unterstützung benötigen Sie?" if lang == "DE" else "What kind of support do you need?"
-    st.markdown(f"<h1 style='text-align: center;'>{title}</h1><br><br>", unsafe_allow_html=True)
+    st.markdown(f"<div class='page-title'>{title}</div><br>", unsafe_allow_html=True)
     
-    _, col1, col2, _ = st.columns([1, 2, 2, 1])
+    # Use spacer columns for perfect alignment
+    _, col1, col2, _ = st.columns([1, 2.5, 2.5, 1])
     
     with col1:
         lbl_fin = "💰\n\n**FINANZIELLE HILFE**\n\nBeantragen Sie Mikrostipendien oder Gemeindefinanzierung." if lang == "DE" else "💰\n\n**FINANCIAL HELP**\n\nApply for micro-grants or community funding."
@@ -330,7 +350,8 @@ def submit_page():
     st.markdown("---")
     st.warning("📡 **Sie sind offline.** Ihre Eingaben werden auf dem Gerät gespeichert." if lang == "DE" else "📡 **You are offline.** Your typing is automatically saved to your device.", icon="⚠️")
     
-    st.markdown(f"<h1 style='text-align: center;'>{'IDEE EINREICHEN' if lang == 'DE' else 'SUBMIT AN IDEA'}</h1>", unsafe_allow_html=True)
+    page_title_text = "IDEE EINREICHEN" if lang == "DE" else "SUBMIT AN IDEA"
+    st.markdown(f"<div class='page-title'>{page_title_text}</div>", unsafe_allow_html=True)
     st.progress(st.session_state.wizard_step / 3.0)
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -417,7 +438,9 @@ def submit_page():
 
 def feed_page():
     if st.button("🦇", type="secondary"): navigate_to('home')
-    st.markdown(f"<h1 style='text-align: center; font-size: 3rem;'>{'COMMUNITY-FEED' if lang == 'DE' else 'COMMUNITY FEED'}</h1>", unsafe_allow_html=True)
+    
+    title = 'COMMUNITY-FEED' if lang == 'DE' else 'COMMUNITY FEED'
+    st.markdown(f"<div class='page-title'>{title}</div>", unsafe_allow_html=True)
     st.info("📣 **Mikro-Erfolge:** Tom hat seine Leiter mit Anna geteilt." if lang == "DE" else "📣 **Micro-Wins:** Tom shared his ladder with Anna.", icon="✨")
     
     for idea in mock_ideas:
@@ -432,20 +455,24 @@ def feed_page():
 
 def dashboard_page():
     if st.button("🦇", type="secondary"): navigate_to('home')
-    st.markdown(f"<h1 style='text-align: center;'>{'MEIN DASHBOARD' if lang == 'DE' else 'MY DASHBOARD'}</h1>", unsafe_allow_html=True)
+    title = 'MEIN DASHBOARD' if lang == 'DE' else 'MY DASHBOARD'
+    st.markdown(f"<div class='page-title'>{title}</div>", unsafe_allow_html=True)
     st.write("Profil und Privatsphäre Einstellungen" if lang == "DE" else "Profile and Privacy settings")
 
 def admin_page():
     if st.button("🦇", type="secondary"): navigate_to('home')
-    st.markdown(f"<h1 style='text-align: center;'>{'STADTVERWALTUNG' if lang == 'DE' else 'CITY ADMIN'}</h1>", unsafe_allow_html=True)
+    title = 'STADTVERWALTUNG' if lang == 'DE' else 'CITY ADMIN'
+    st.markdown(f"<div class='page-title'>{title}</div>", unsafe_allow_html=True)
 
 def how_it_works_page():
     if st.button("🦇", type="secondary"): navigate_to('home')
-    st.markdown(f"<h1 style='text-align: center;'>{'WIE ES FUNKTIONIERT' if lang == 'DE' else 'HOW IT WORKS'}</h1>", unsafe_allow_html=True)
+    title = 'WIE ES FUNKTIONIERT' if lang == 'DE' else 'HOW IT WORKS'
+    st.markdown(f"<div class='page-title'>{title}</div>", unsafe_allow_html=True)
 
 def success_page():
     if st.button("🦇", type="secondary"): navigate_to('home')
-    st.markdown(f"<h1 style='text-align: center;'>{'ERFOLGSGESCHICHTEN' if lang == 'DE' else 'SUCCESS STORIES'}</h1>", unsafe_allow_html=True)
+    title = 'ERFOLGSGESCHICHTEN' if lang == 'DE' else 'SUCCESS STORIES'
+    st.markdown(f"<div class='page-title'>{title}</div>", unsafe_allow_html=True)
 
 # ==========================================
 # 6. MAIN CONTROLLER
